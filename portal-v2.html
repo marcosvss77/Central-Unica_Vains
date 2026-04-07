@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Central Unificada VAINS · V2</title>
+  <style>
+    :root{
+      --bg:#f4f7fb;
+      --card:#ffffff;
+      --line:#e2e8f0;
+      --text:#183153;
+      --muted:#6b7a90;
+      --blue:#1f5eff;
+      --blue-dark:#153b83;
+      --soft:#eef4ff;
+      --green:#1f9d68;
+      --orange:#ef8d18;
+      --red:#d84a4a;
+      --shadow:0 12px 35px rgba(15,35,70,.08);
+      --radius:22px;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;background:linear-gradient(180deg,#f8fbff 0,#eef3f9 100%);color:var(--text)}
+    .shell{max-width:1400px;margin:26px auto;padding:0 18px}
+    .window{background:rgba(255,255,255,.7);backdrop-filter:blur(8px);border:1px solid rgba(226,232,240,.9);border-radius:28px;overflow:hidden;box-shadow:var(--shadow)}
+    .topbar{display:flex;justify-content:space-between;align-items:center;padding:18px 24px;background:#fff;border-bottom:1px solid var(--line)}
+    .brand{display:flex;align-items:center;gap:14px}
+    .logo{width:46px;height:46px;border-radius:14px;background:linear-gradient(180deg,var(--blue),var(--blue-dark));position:relative}
+    .logo:before,.logo:after{content:"";position:absolute;bottom:7px;background:#fff;border-radius:2px}.logo:before{left:9px;width:8px;height:18px}.logo:after{left:22px;width:8px;height:28px;box-shadow:12px -7px 0 0 #fff}
+    .brand h1{font-size:22px;margin:0}.brand span{display:block;color:var(--muted);font-size:12px;margin-top:3px}
+    .menu{display:flex;gap:10px;flex-wrap:wrap}.menu a{text-decoration:none;color:var(--muted);padding:11px 14px;border-radius:12px;font-weight:700}.menu a.active{background:var(--soft);color:var(--blue-dark)}
+    .layout{display:grid;grid-template-columns:280px 1fr;gap:0;min-height:880px}
+    aside{background:#fbfdff;border-right:1px solid var(--line);padding:22px}
+    .side-title{font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:0 0 12px}
+    .side-group{display:grid;gap:10px;margin-bottom:24px}
+    .side-btn{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px 15px;box-shadow:var(--shadow);font-weight:800;color:var(--text)}
+    .side-btn small{display:block;color:var(--muted);font-weight:600;margin-top:4px;line-height:1.35}
+    .side-btn.active{border-color:#c9d8ff;background:linear-gradient(180deg,#fafdff,#f3f7ff)}
+    main{padding:28px}
+    .hero{display:flex;justify-content:space-between;align-items:flex-start;gap:22px;margin-bottom:24px}
+    .hero h2{font-size:42px;line-height:1.04;margin:0 0 10px;max-width:820px}
+    .hero p{margin:0;color:var(--muted);font-size:18px;max-width:760px;line-height:1.5}
+    .badge{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px 18px;min-width:220px;box-shadow:var(--shadow)}
+    .badge strong{display:block;font-size:28px}.badge span{color:var(--muted);font-weight:700}
+    .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px}
+    .kpi{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:var(--shadow)}
+    .kpi .value{font-size:34px;font-weight:900}.kpi .label{color:var(--muted);font-weight:700;margin-top:6px}
+    .grid{display:grid;grid-template-columns:1.1fr .9fr;gap:18px}
+    .card{background:#fff;border:1px solid var(--line);border-radius:22px;padding:22px;box-shadow:var(--shadow)}
+    .card h3{margin:0 0 6px;font-size:24px}.card p.head{margin:0 0 18px;color:var(--muted);line-height:1.5}
+    .modules{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+    .module{border:1px solid var(--line);border-radius:18px;padding:16px;background:#fbfdff}
+    .module h4{margin:0 0 8px;font-size:18px}.module ul{margin:0;padding-left:18px;color:#42536d;line-height:1.5}
+    .flow{display:grid;gap:12px}
+    .flow-row{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:10px;align-items:center}
+    .flow-box{background:#f8fbff;border:1px solid var(--line);border-radius:16px;padding:14px;font-weight:800;text-align:center;min-height:78px;display:flex;align-items:center;justify-content:center}
+    .arrow{font-size:24px;color:var(--muted);font-weight:900}
+    .config-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+    .config-item{border:1px solid var(--line);border-radius:16px;padding:16px;background:linear-gradient(180deg,#fff,#fbfdff)}
+    .config-item h4{margin:0 0 8px;font-size:18px}.config-item p{margin:0;color:#4a5b76;line-height:1.5}
+    .charts{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .panel{border:1px solid var(--line);border-radius:16px;padding:16px;background:#fbfdff}
+    .panel h4{margin:0 0 12px;font-size:18px}
+    .bars{display:grid;gap:12px}.bar-row{display:grid;grid-template-columns:92px 1fr;gap:10px;align-items:center}.track{height:12px;background:#ebf1f7;border-radius:999px;overflow:hidden}.fill{height:100%;border-radius:999px}.blue{background:#2d6cdf}.orange{background:var(--orange)}.green{background:var(--green)}.red{background:var(--red)}
+    .list{margin:0;padding-left:18px;color:#42536d;line-height:1.7}
+    .timeline{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:14px}
+    .step{border:1px solid var(--line);border-radius:16px;padding:14px;background:#fff}.step strong{display:block;margin-bottom:6px}.step span{color:var(--muted);font-size:14px;line-height:1.4}
+    .footer{display:flex;justify-content:space-between;gap:20px;border-top:1px solid var(--line);padding-top:20px;margin-top:22px;color:var(--muted);font-size:14px}
+    @media (max-width:1100px){.layout{grid-template-columns:1fr}.grid,.kpis,.charts,.modules,.config-grid,.timeline{grid-template-columns:1fr}.hero{flex-direction:column}}
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <div class="window">
+      <div class="topbar">
+        <div class="brand">
+          <div class="logo"></div>
+          <div>
+            <h1>VAINS Engenharia</h1>
+            <span>Central Unificada · versão conceitual mais enxuta</span>
+          </div>
+        </div>
+        <nav class="menu">
+          <a href="#" class="active">Painel</a>
+          <a href="#">Operação</a>
+          <a href="#">Governança</a>
+          <a href="#">Configurações</a>
+        </nav>
+      </div>
+
+      <div class="layout">
+        <aside>
+          <p class="side-title">Módulos principais</p>
+          <div class="side-group">
+            <div class="side-btn active">Painel Gerencial<small>KPIs, exceções, andamento por obra e visão executiva.</small></div>
+            <div class="side-btn">Operação Integrada<small>Fluxos entre obra, suprimentos, financeiro e controle.</small></div>
+            <div class="side-btn">Governança Operacional<small>Permissões, documentos, trilha de alteração e evidências.</small></div>
+            <div class="side-btn">Arquitetura e Sistemas<small>Papel de cada sistema e como os dados se conectam.</small></div>
+            <div class="side-btn">Configurações<small>Cadastros, regras, alertas, parâmetros e acessos.</small></div>
+          </div>
+
+          <p class="side-title">O que cada botão abre</p>
+          <div class="side-group">
+            <div class="side-btn">Painel<small>Resumo executivo, desvios, alertas, custo, avanço e pendências por área.</small></div>
+            <div class="side-btn">Obras<small>Status por contrato, cronograma, medições, ocorrências e responsáveis.</small></div>
+            <div class="side-btn">Suprimentos<small>Solicitações, aprovações, entregas, atrasos e itens críticos.</small></div>
+            <div class="side-btn">Financeiro<small>Integração com Omie, lançamentos, centro de custo e notas pendentes.</small></div>
+          </div>
+        </aside>
+
+        <main>
+          <section class="hero">
+            <div>
+              <h2>Uma interface mais limpa, com menos ruído e mais leitura útil.</h2>
+              <p>A ideia aqui não é mostrar tudo de uma vez. É mostrar o que a diretoria precisa ver primeiro e permitir que cada área entre no detalhe quando necessário.</p>
+            </div>
+            <div class="badge">
+              <strong>5 alertas</strong>
+              <span>exigem ação em até 24h</span>
+            </div>
+          </section>
+
+          <section class="kpis">
+            <div class="kpi"><div class="value">20</div><div class="label">Obras ativas</div></div>
+            <div class="kpi"><div class="value">85%</div><div class="label">Execução média do cronograma</div></div>
+            <div class="kpi"><div class="value">R$ 1,2 mi</div><div class="label">Custo atual consolidado</div></div>
+            <div class="kpi"><div class="value">12</div><div class="label">Pendências críticas abertas</div></div>
+          </section>
+
+          <section class="grid">
+            <div class="card">
+              <h3>O que cada área mostraria</h3>
+              <p class="head">Cada botão do portal abriria um conjunto objetivo de informações, sem virar carnaval de card.</p>
+              <div class="modules">
+                <div class="module">
+                  <h4>Painel Gerencial</h4>
+                  <ul>
+                    <li>KPIs consolidados da operação</li>
+                    <li>Alertas e desvios por prioridade</li>
+                    <li>Visão rápida por obra e por área</li>
+                  </ul>
+                </div>
+                <div class="module">
+                  <h4>Processos Integrados</h4>
+                  <ul>
+                    <li>Fluxo da solicitação até o financeiro</li>
+                    <li>Etapas travadas ou atrasadas</li>
+                    <li>Pontos de exceção e aprovações pendentes</li>
+                  </ul>
+                </div>
+                <div class="module">
+                  <h4>Arquitetura + Sistemas</h4>
+                  <ul>
+                    <li>RDObras como base da obra</li>
+                    <li>Omie como retaguarda</li>
+                    <li>SharePoint, Power Automate e BI como camada complementar</li>
+                  </ul>
+                </div>
+                <div class="module">
+                  <h4>Governança Operacional</h4>
+                  <ul>
+                    <li>Documentos válidos e revisões</li>
+                    <li>Permissões e responsáveis</li>
+                    <li>Evidências, histórico e rastreabilidade</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <h3>Leitura executiva</h3>
+              <p class="head">A visão lateral serve para bater o olho e saber onde agir.</p>
+              <div class="charts">
+                <div class="panel">
+                  <h4>Pendências por área</h4>
+                  <div class="bars">
+                    <div class="bar-row"><span>Compras</span><div class="track"><div class="fill blue" style="width:62%"></div></div></div>
+                    <div class="bar-row"><span>Financeiro</span><div class="track"><div class="fill orange" style="width:74%"></div></div></div>
+                    <div class="bar-row"><span>Equipe</span><div class="track"><div class="fill red" style="width:31%"></div></div></div>
+                  </div>
+                </div>
+                <div class="panel">
+                  <h4>Alertas recentes</h4>
+                  <ul class="list">
+                    <li>Pedido de suprimentos acima do prazo</li>
+                    <li>Nota fiscal ainda não lançada</li>
+                    <li>Obra sem atualização diária</li>
+                    <li>Revisão de cronograma pendente</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="grid" style="margin-top:18px">
+            <div class="card">
+              <h3>Fluxo operacional na prática</h3>
+              <p class="head">Aqui o objetivo é mostrar como a informação caminha sem depender só de planilha, memória e mensagem solta.</p>
+              <div class="flow">
+                <div class="flow-row">
+                  <div class="flow-box">Solicitação da obra</div><div class="arrow">→</div>
+                  <div class="flow-box">Validação / aprovação</div><div class="arrow">→</div>
+                  <div class="flow-box">Lançamento e acompanhamento</div>
+                </div>
+                <div class="flow-row">
+                  <div class="flow-box">RDObras registra a demanda</div><div class="arrow">→</div>
+                  <div class="flow-box">Fluxo define responsável e prazo</div><div class="arrow">→</div>
+                  <div class="flow-box">Omie recebe reflexo financeiro</div>
+                </div>
+              </div>
+              <div class="timeline">
+                <div class="step"><strong>1. Obra</strong><span>Encarregado abre necessidade ou ocorrência.</span></div>
+                <div class="step"><strong>2. Gestão</strong><span>Responsável valida prioridade e centro de custo.</span></div>
+                <div class="step"><strong>3. Suprimentos</strong><span>Compra, separação ou programação de entrega.</span></div>
+                <div class="step"><strong>4. Financeiro</strong><span>Lançamento e impacto no custo consolidado.</span></div>
+                <div class="step"><strong>5. BI</strong><span>Exceções aparecem no painel da diretoria.</span></div>
+              </div>
+            </div>
+
+            <div class="card">
+              <h3>O que teria em Configurações</h3>
+              <p class="head">Esse botão não seria perfumaria. Ele seria o coração do controle fino do ambiente.</p>
+              <div class="config-grid">
+                <div class="config-item">
+                  <h4>Usuários e perfis</h4>
+                  <p>Criação de acessos por área, papel, obra, nível de aprovação e escopo de visualização.</p>
+                </div>
+                <div class="config-item">
+                  <h4>Regras de alerta</h4>
+                  <p>Prazos, criticidade, notificações por e-mail ou Teams e gatilhos por desvio.</p>
+                </div>
+                <div class="config-item">
+                  <h4>Cadastros e parâmetros</h4>
+                  <p>Obras, centros de custo, responsáveis, categorias, motivos de ocorrência e fluxos padrão.</p>
+                </div>
+                <div class="config-item">
+                  <h4>Integrações</h4>
+                  <p>Status das conexões com RDObras, Omie, SharePoint e automações complementares.</p>
+                </div>
+                <div class="config-item">
+                  <h4>Governança documental</h4>
+                  <p>Bibliotecas, tipos de documento, revisão válida, retenção e obrigatoriedade de evidências.</p>
+                </div>
+                <div class="config-item">
+                  <h4>Painel e indicadores</h4>
+                  <p>Quais indicadores aparecem, filtros padrão, visão por obra, área e exceção operacional.</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <div class="footer">
+            <div>Versão 2 do mockup · foco em clareza, navegação e leitura executiva</div>
+            <div>Próximo nível: transformar isso em navegação com telas internas por módulo</div>
+          </div>
+        </main>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
