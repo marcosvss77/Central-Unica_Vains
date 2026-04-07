@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Central Unificada VAINS</title>
+  <style>
+    :root {
+      --bg: #eef2f7;
+      --card: #ffffff;
+      --text: #17325c;
+      --muted: #5d6b82;
+      --blue: #1f5eb8;
+      --blue-2: #2c77e5;
+      --line: #d9e0ea;
+      --green: #2e9d61;
+      --orange: #f39c12;
+      --red: #d64541;
+      --shadow: 0 10px 30px rgba(17, 34, 68, 0.08);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, Segoe UI, Arial, sans-serif;
+      background: linear-gradient(180deg, #f7f9fc 0%, var(--bg) 100%);
+      color: var(--text);
+    }
+    .topbar {
+      max-width: 1400px;
+      margin: 24px auto 0;
+      background: rgba(255,255,255,.85);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(217,224,234,.7);
+      border-radius: 18px 18px 0 0;
+      box-shadow: var(--shadow);
+      padding: 18px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .brand { display: flex; align-items: center; gap: 14px; }
+    .logo {
+      width: 42px; height: 42px; border-radius: 10px;
+      background: linear-gradient(180deg, var(--blue), #143d77);
+      position: relative;
+      overflow: hidden;
+    }
+    .logo:before, .logo:after { content: ""; position: absolute; bottom: 6px; background: rgba(255,255,255,.92); }
+    .logo:before { left: 8px; width: 8px; height: 18px; }
+    .logo:after { left: 20px; width: 8px; height: 28px; box-shadow: 12px -8px 0 0 rgba(255,255,255,.92); }
+    .brand h1 { font-size: 22px; margin: 0; }
+    .brand span { display: block; font-size: 12px; color: var(--muted); margin-top: 2px; }
+    nav { display: flex; gap: 28px; color: var(--muted); font-weight: 600; }
+    nav .active { color: var(--text); position: relative; }
+    nav .active:after {
+      content: ""; position: absolute; left: 0; right: 0; bottom: -10px;
+      height: 3px; background: var(--blue-2); border-radius: 999px;
+    }
+    .wrapper {
+      max-width: 1400px;
+      margin: 0 auto 32px;
+      padding: 26px 28px 40px;
+      background: rgba(255,255,255,.72);
+      border: 1px solid rgba(217,224,234,.7);
+      border-top: none;
+      border-radius: 0 0 18px 18px;
+      box-shadow: var(--shadow);
+    }
+    .hero h2 {
+      font-size: 48px;
+      line-height: 1.05;
+      margin: 12px 0 10px;
+      max-width: 900px;
+    }
+    .hero p {
+      margin: 0 0 26px;
+      color: var(--muted);
+      font-size: 20px;
+      max-width: 900px;
+    }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin: 26px 0 30px;
+    }
+    .stat {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 22px;
+      box-shadow: var(--shadow);
+    }
+    .stat .value { font-size: 34px; font-weight: 800; }
+    .stat .label { color: var(--muted); font-weight: 600; margin-top: 6px; }
+    .cards {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr 1fr;
+      gap: 22px;
+      align-items: start;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 22px;
+      box-shadow: var(--shadow);
+    }
+    .card h3 { margin: 0 0 18px; font-size: 26px; }
+    .flow-stage {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .pill {
+      background: #f5f8fd;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 14px 10px;
+      text-align: center;
+      font-weight: 700;
+      color: #2c3d5c;
+      min-height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .system {
+      background: linear-gradient(90deg, var(--blue-2), var(--blue));
+      color: white;
+      border-radius: 12px;
+      padding: 15px;
+      text-align: center;
+      font-size: 28px;
+      font-weight: 800;
+      margin: 16px 0;
+    }
+    .mini-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-top: 12px;
+    }
+    .mini {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 14px;
+      background: #fafcff;
+      min-height: 78px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    .arch-stack { display: grid; gap: 16px; }
+    .stack-item {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 18px 20px;
+      background: #fbfdff;
+      position: relative;
+      font-weight: 800;
+      font-size: 24px;
+    }
+    .stack-item span {
+      display: block;
+      margin-top: 5px;
+      font-size: 16px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+    .stack-item:not(:last-child):after {
+      content: "↓";
+      position: absolute;
+      left: 50%;
+      bottom: -26px;
+      transform: translateX(-50%);
+      color: var(--muted);
+      font-size: 24px;
+      font-weight: 700;
+    }
+    .board {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+    .board-top {
+      background: #174b93;
+      color: white;
+      font-weight: 800;
+      padding: 14px 16px;
+      font-size: 22px;
+    }
+    .kpis {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      padding: 14px;
+      background: #f8fbff;
+    }
+    .kpi {
+      border-radius: 12px;
+      color: white;
+      padding: 14px 12px;
+      font-weight: 800;
+      min-height: 92px;
+    }
+    .kpi small { display: block; font-size: 13px; margin-top: 8px; opacity: .95; }
+    .orange { background: var(--orange); }
+    .red { background: var(--red); }
+    .green { background: var(--green); }
+    .navy { background: #23466f; }
+    .panel-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 12px;
+      padding: 0 14px 14px;
+      background: #f8fbff;
+    }
+    .panel {
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 14px;
+      min-height: 140px;
+    }
+    .panel h4 { margin: 0 0 12px; font-size: 18px; }
+    .bars { display: grid; gap: 12px; }
+    .bar-row { display: grid; grid-template-columns: 90px 1fr; gap: 10px; align-items: center; }
+    .track { height: 14px; background: #edf2f8; border-radius: 999px; overflow: hidden; }
+    .fill { height: 100%; border-radius: 999px; }
+    .fill.blue { background: #3b73c9; width: 58%; }
+    .fill.orange { background: #ee8d19; width: 72%; }
+    .fill.red { background: #d64541; width: 35%; }
+    .fill.green { background: #4caf50; width: 84%; }
+    .linechart {
+      display: grid; align-items: end; height: 90px; grid-template-columns: repeat(6, 1fr); gap: 8px; margin-top: 16px;
+    }
+    .linechart div { background: linear-gradient(180deg, #8cb7f4, #2c77e5); border-radius: 8px 8px 0 0; }
+    .alerts { margin: 0; padding-left: 18px; color: #2e3f5e; }
+    .alerts li { margin-bottom: 10px; }
+    .foot {
+      margin-top: 28px;
+      display: flex;
+      justify-content: space-between;
+      color: var(--muted);
+      font-size: 14px;
+      border-top: 1px solid var(--line);
+      padding-top: 18px;
+    }
+    @media (max-width: 1200px) {
+      .cards, .stats { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 860px) {
+      nav { display: none; }
+      .cards, .stats, .flow-stage, .mini-grid, .kpis, .panel-grid { grid-template-columns: 1fr; }
+      .hero h2 { font-size: 34px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo"></div>
+      <div>
+        <h1>VAINS Engenharia</h1>
+        <span>Central Unificada · Mockup conceitual</span>
+      </div>
+    </div>
+    <nav>
+      <div>Painel Gerencial</div>
+      <div class="active">Processos Integrados</div>
+      <div>Arquitetura + Sistemas</div>
+      <div>Governança Operacional</div>
+    </nav>
+  </header>
+
+  <main class="wrapper">
+    <section class="hero">
+      <h2>Arquitetura operacional integrada para escalar a VAINS sem criar uma empresa nova a cada crescimento.</h2>
+      <p>Mockup de leitura executiva mostrando como processo, sistema-base, governança, integrações e BI podem funcionar como uma única camada gerencial.</p>
+    </section>
+
+    <section class="stats">
+      <div class="stat"><div class="value">20</div><div class="label">Obras ativas</div></div>
+      <div class="stat"><div class="value">5</div><div class="label">Alertas críticos</div></div>
+      <div class="stat"><div class="value">85%</div><div class="label">Execução do cronograma</div></div>
+      <div class="stat"><div class="value">R$ 1,2 mi</div><div class="label">Custo atual consolidado</div></div>
+    </section>
+
+    <section class="cards">
+      <article class="card">
+        <h3>Fluxo Operacional Integrado</h3>
+        <div class="flow-stage">
+          <div class="pill">Solicitação de Materiais</div>
+          <div class="pill">Aprovação de Suprimentos</div>
+          <div class="pill">Recebimento na Obra</div>
+        </div>
+        <div class="system">RDObras</div>
+        <div class="mini-grid">
+          <div class="mini">Pedido Gerado</div>
+          <div class="mini">Solicitação no RDObras</div>
+          <div class="mini">Lançamento na Omie</div>
+          <div class="mini">Integração de Centro de Custo</div>
+        </div>
+        <div class="system" style="margin-top:18px;background:linear-gradient(90deg,#0e75d8,#0c4f95)">Omie</div>
+        <div class="mini-grid">
+          <div class="mini">Nota Fiscal Emitida</div>
+          <div class="mini">Lançamento Financeiro</div>
+          <div class="mini">Alerta de Atraso</div>
+          <div class="mini">Atualização de Custo</div>
+        </div>
+      </article>
+
+      <article class="card">
+        <h3>Arquitetura Integrada de Sistemas</h3>
+        <div class="arch-stack">
+          <div class="stack-item">RDObras <span>Base operacional da obra</span></div>
+          <div class="stack-item">Omie <span>Retaguarda financeira e administrativa</span></div>
+          <div class="stack-item">SharePoint <span>Documentos, listas, cadastros e governança</span></div>
+          <div class="stack-item">Power Automate <span>Fluxos, alertas, aprovações e exceções</span></div>
+          <div class="stack-item">Power BI <span>Leitura executiva e visão por área</span></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <h3>Painel Gerencial e BI</h3>
+        <div class="board">
+          <div class="board-top">Painel Gerencial · VAINS</div>
+          <div class="kpis">
+            <div class="kpi orange">20<small>Obras Ativas</small></div>
+            <div class="kpi red">5<small>Atrasos Críticos</small></div>
+            <div class="kpi green">85%<small>Execução do Cronograma</small></div>
+            <div class="kpi navy">R$ 1,2 mi<small>Custo Atual</small></div>
+          </div>
+          <div class="panel-grid">
+            <div class="panel">
+              <h4>Progresso das Obras</h4>
+              <div class="linechart">
+                <div style="height:26%"></div>
+                <div style="height:42%"></div>
+                <div style="height:56%"></div>
+                <div style="height:64%"></div>
+                <div style="height:78%"></div>
+                <div style="height:92%"></div>
+              </div>
+            </div>
+            <div class="panel">
+              <h4>Pendências por Área</h4>
+              <div class="bars">
+                <div class="bar-row"><span>Compras</span><div class="track"><div class="fill blue"></div></div></div>
+                <div class="bar-row"><span>Financeiro</span><div class="track"><div class="fill orange"></div></div></div>
+                <div class="bar-row"><span>Equipe</span><div class="track"><div class="fill red"></div></div></div>
+              </div>
+            </div>
+            <div class="panel">
+              <h4>Desvio de Custos</h4>
+              <div class="bars">
+                <div class="bar-row"><span>Orçado</span><div class="track"><div class="fill green"></div></div></div>
+                <div class="bar-row"><span>Atual</span><div class="track"><div class="fill blue" style="width:68%"></div></div></div>
+              </div>
+            </div>
+            <div class="panel">
+              <h4>Alertas Recentes</h4>
+              <ul class="alerts">
+                <li>Pedido de suprimentos atrasado</li>
+                <li>Nota fiscal pendente de lançamento</li>
+                <li>Revisão de cronograma requerida</li>
+                <li>Obra sem atualização diária</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <div class="foot">
+      <div>Mockup conceitual para discussão estratégica · Diversa + VAINS</div>
+      <div>Foco: arquitetura, integração, governança e camada gerencial</div>
+    </div>
+  </main>
+</body>
+</html>
